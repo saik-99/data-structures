@@ -1,0 +1,70 @@
+//Write a program to sort (Ascending order) the given elements using merge sort technique.
+// main code file 
+#include <stdio.h>
+#include "MergeSortFunctions.c"
+void main() {
+	int arr[15], i, n;
+	printf("Enter array size : ");
+	scanf("%d", &n);
+	printf("Enter %d elements : ", n);
+	for (i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	printf("Before sorting the elements are : ");
+	display(arr, n);
+	splitAndMerge(arr, 0, n - 1);
+	printf("After sorting the elements are : ");
+	display(arr, n);
+}
+// merge sort function
+void display(int arr[15], int n) {
+	for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+void merge(int arr[15], int low, int mid, int high) {
+	int n1 = mid - low + 1;
+    int n2 = high - mid;
+    
+    // Temporary arrays to hold the two halves
+    int left[n1], right[n2];
+    
+    // Copy data to temporary arrays
+    for (int i = 0; i < n1; i++)
+        left[i] = arr[low + i];
+    for (int j = 0; j < n2; j++)
+        right[j] = arr[mid + 1 + j];
+    
+    // Merge the two halves
+    int i = 0, j = 0, k = low;
+    while (i < n1 && j < n2) {
+        if (left[i] <= right[j]) {
+            arr[k] = left[i];
+            i++;
+        } else {
+            arr[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+    // Copy the remaining elements of left[], if any
+    while (i < n1) {
+        arr[k] = left[i];
+        i++;
+        k++;
+    }
+    
+}
+void splitAndMerge(int arr[15], int low, int high) {
+	if (low < high) {
+        int mid = low + (high - low) / 2;
+        
+        // Recursively sort the first and second halves
+        splitAndMerge(arr, low, mid);
+        splitAndMerge(arr, mid + 1, high);
+        
+        // Merge the sorted halves
+        merge(arr, low, mid, high);
+	}
+}
