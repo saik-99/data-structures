@@ -1,0 +1,56 @@
+//Write a program to sort the given strings using bubble sort technique.
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STR_LEN 100  // Maximum string length
+#define MAX_STR_COUNT 100 // Maximum number of strings
+
+// Function to perform bubble sort on strings
+void bubbleSort(char arr[][MAX_STR_LEN], int n) {
+    char temp[MAX_STR_LEN];
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (strcmp(arr[j], arr[j + 1]) > 0) {
+                // Swap the strings if they are in the wrong order
+                strcpy(temp, arr[j]);
+                strcpy(arr[j], arr[j + 1]);
+                strcpy(arr[j + 1], temp);
+            }
+        }
+    }
+}
+// Function to print strings
+void printStrings(char arr[][MAX_STR_LEN], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("String at a[%d] = %s\n", i, arr[i]);
+    }
+}
+
+int main() {
+    int n;
+    char strings[MAX_STR_COUNT][MAX_STR_LEN];
+
+    // Input number of strings
+    printf("Enter value of n : ");
+    scanf("%d", &n);
+    getchar();  // To consume the newline left by scanf
+
+    // Input strings
+    for (int i = 0; i < n; i++) {
+        printf("Enter string for a[%d] : ", i);
+        fgets(strings[i], MAX_STR_LEN, stdin);
+        strings[i][strcspn(strings[i], "\n")] = '\0';  // Remove trailing newline
+    }
+
+    // Print strings before sorting
+    printf("Before sorting the strings in the array are\n");
+    printStrings(strings, n);
+// Sort strings using bubble sort
+    bubbleSort(strings, n);
+
+    // Print strings after sorting
+    printf("After sorting the strings in the array are\n");
+    printStrings(strings, n);
+
+    return 0;
+}
