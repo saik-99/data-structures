@@ -1,0 +1,92 @@
+//Write a C program to construct a Minimum Cost Spanning Tree (MST) using Prim's Algorithm, printing the selected edges and the total minimum cost.
+
+#include<stdio.h>
+#include<conio.h>
+
+
+#define MAX 20
+#define INF 999
+
+int cost[MAX][MAX], n, e; // cost matrix, number of vertices, number of edges
+int visited[MAX];         // visited array to track included vertices
+
+void prims() {
+    int i, j, u, v, min, total = 0, edgeCount = 0;
+
+    // Start from vertex 1
+    visited[1] = 1;
+
+    while (edgeCount < n - 1) {
+        min = INF;
+        u = v = -1;
+        
+        for (i = 1; i <= n; i++) {
+            if (visited[i]) {
+                for (j = 1; j <= n; j++) {
+                    if (!visited[j] && cost[i][j] < min) {
+                        min = cost[i][j];
+                        u = i;
+                        v = j;
+                    }
+                }
+            }
+        }
+
+        if (u != -1 && v != -1) {
+            printf("Edge cost from %d to %d : %d\n", u, v, cost[u][v]);
+            total += cost[u][v];
+            visited[v] = 1;
+            edgeCount++;
+        }
+    }
+
+    printf("Minimum cost of spanning tree = %d\n", total);
+}
+void main() {
+    int i, j, s, d, w;
+
+    printf("Enter the number of vertices : ");
+    scanf("%d", &n);
+    printf("Enter the number of edges : ");
+    scanf("%d", &e);
+
+    // Initialize cost matrix
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            cost[i][j] = 0;
+        }
+    }
+
+    for (i = 1; i <= e; i++) {
+        printf("Enter source : ");
+        scanf("%d", &s);
+        printf("Enter destination : ");
+        scanf("%d", &d);
+        printf("Enter weight : ");
+        scanf("%d", &w);
+
+        if (s <= 0 || d <= 0 || s > n || d > n || w < 0) {
+            printf("Invalid data.Try again.\n");
+                        i--;
+            continue;
+        }
+
+        cost[s][d] = w;
+        cost[d][s] = w;
+    }
+
+    // Replace 0 with INF for easier comparisons
+    for (i = 1; i <= n; i++) {
+        for (j = 1; j <= n; j++) {
+            if (cost[i][j] == 0)
+                cost[i][j] = INF;
+        }
+    }
+
+    // Initialize visited array
+    for (i = 1; i <= n; i++)
+        visited[i] = 0;
+
+    printf("The edges of Minimum Cost Spanning Tree are : \n");
+    prims();
+}
